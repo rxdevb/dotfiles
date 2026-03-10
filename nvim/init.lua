@@ -53,6 +53,12 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-neotest/nvim-nio" }
 })
 
+local current_pack_path = vim.fn.stdpath("data") .. "/site/pack/plugins/start/"
+local all_folders = vim.fn.expand(current_pack_path .. "*", false, true)
+for _, folder in ipairs(all_folders) do
+	vim.opt.runtimepath:append(folder)
+end
+
 local function safe_require(module, config_fn)
     local status, mod = pcall(require, module)
     if status then config_fn(mod) end
