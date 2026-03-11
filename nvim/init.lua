@@ -114,3 +114,22 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	pattern = "*.jsx,*.tsx",
 	callback = function() vim.cmd([[set filetype=typescriptreact]]) end
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "typst",
+    callback = function()
+        local cmd = "tinymist"
+        if vim.fn.executable(cmd) == 0 then
+            cmd = vim.fn.expand("$HOME/.cargo/bin/tinymist")
+        end
+
+        vim.lsp.start({
+            name = "tinymist",
+            cmd = { cmd },
+            root_dir = vim.fn.getcwd(),
+            settings = {
+                exportPdf = "onSave",
+            }
+        })
+    end,
+})
